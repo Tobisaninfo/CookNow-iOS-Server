@@ -13,7 +13,7 @@ import spark.Spark._
   * Created by tobias on 02.05.17.
   */
 object CookNowServerMain extends App {
-
+	
 	// Settings
 	val settings = SettingsHandler.loader.load(Paths.get("settings.properties"))
 
