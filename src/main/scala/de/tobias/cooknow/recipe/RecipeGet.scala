@@ -33,7 +33,7 @@ class RecipeGet(val conn: Connection) extends Route {
 		stat.close()
 
 		if (recipe == null) {
-			Spark.halt(400, "Bad Request: Recipe not exsits")
+			Spark.halt(400, "Bad Request: Recipe not exists")
 		}
 
 		// Build JsonObject

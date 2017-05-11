@@ -4,6 +4,7 @@ import java.nio.file.Paths
 import java.sql.DriverManager
 
 import de.tobias.cooknow.barcode.BarcodeGet
+import de.tobias.cooknow.ingredient.IngredientList
 import de.tobias.cooknow.recipe.{RecipeGet, RecipeList}
 import de.tobias.cooknow.server.settings.SettingsHandler
 import spark.Spark._
@@ -24,8 +25,13 @@ object CookNowServerMain extends App {
 	port(8001)
 
 	// Recipe
-	path("/recipes", () => {
+	path("/recipe", () => {
 		get("/", new RecipeList(databaseConnection))
+		get("/:id", new RecipeGet(databaseConnection))
+	})
+
+	path("/ingredient", () => {
+		get("/", new IngredientList(databaseConnection))
 		get("/:id", new RecipeGet(databaseConnection))
 	})
 
@@ -36,4 +42,9 @@ object CookNowServerMain extends App {
 	// Barcode
 	get("/barcode", new BarcodeGet())
 
+	// DEBUG
+	exception(classOf[Exception], (exception, _, _) => {
+		exception.printStackTrace()
+		halt(500, s"internal error: ${exception.getLocalizedMessage}")
+	})
 }
