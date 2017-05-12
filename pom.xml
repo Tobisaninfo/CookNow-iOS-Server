@@ -22,7 +22,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>de.tobias.playpad.server.PlayPadServer</mainClass>
+                                <mainClass>de.tobias.cooknow.CookNowServerMain</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
