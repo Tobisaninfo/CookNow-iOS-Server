@@ -3,7 +3,6 @@ package de.tobias.cooknow.recipe
 import java.sql.Connection
 
 import de.tobias.cooknow.model.Recipe
-import org.json.JSONObject
 import spark.{Request, Response, Route, Spark}
 
 /**
@@ -37,12 +36,6 @@ class RecipeGet(val conn: Connection) extends Route {
 		}
 
 		// Build JsonObject
-		val jsonObject = new JSONObject()
-		jsonObject.put("id", recipe.id)
-		jsonObject.put("name", recipe.name)
-		jsonObject.put("description", recipe.descript)
-		jsonObject.put("time", recipe.time)
-		jsonObject.put("difficulty", recipe.difficulty)
-		jsonObject
+		recipe.toJson
 	}
 }

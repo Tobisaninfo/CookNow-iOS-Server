@@ -5,6 +5,7 @@ import java.sql.DriverManager
 
 import de.tobias.cooknow.barcode.BarcodeGet
 import de.tobias.cooknow.ingredient.IngredientList
+import de.tobias.cooknow.market.{MarketList, MarketOfferList}
 import de.tobias.cooknow.recipe.{RecipeGet, RecipeList}
 import de.tobias.cooknow.server.settings.SettingsHandler
 import spark.Spark._
@@ -30,14 +31,20 @@ object CookNowServerMain extends App {
 		get("/:id", new RecipeGet(databaseConnection))
 	})
 
+	// Ingredient
 	path("/ingredient", () => {
 		get("/", new IngredientList(databaseConnection))
 		get("/:id", new RecipeGet(databaseConnection))
 	})
 
-	// Ingredient
-
 	// Market
+	path("/market", () => {
+		get("/", new MarketList(databaseConnection))
+
+		path("/offer", () => {
+			get("/:id", new MarketOfferList(databaseConnection))
+		})
+	})
 
 	// Barcode
 	get("/barcode", new BarcodeGet())

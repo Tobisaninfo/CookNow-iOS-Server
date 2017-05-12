@@ -3,7 +3,6 @@ package de.tobias.cooknow.ingredient
 import java.sql.Connection
 
 import de.tobias.cooknow.model.{Ingredient, Property, UnitType}
-import org.json.{JSONArray, JSONObject}
 import spark.{Request, Response, Route, Spark}
 
 /**
@@ -34,25 +33,7 @@ class IngredientGet(val conn: Connection) extends Route {
 			Spark.halt(400, "Bad Request: Ingredient not exists")
 		}
 
-		val jsonObject = new JSONObject()
-
-		val unitJson = new JSONObject()
-		unitJson.put("id", ingerdient.unit.id)
-		unitJson.put("name", ingerdient.unit.name)
-
-		val propertiesArray = new JSONArray()
-		ingerdient.property.map(prop => {
-			val propertyJson = new JSONObject()
-			propertyJson.put("id", prop.id)
-			propertyJson.put("name", prop.name)
-			propertyJson
-		}).foreach(propertiesArray.put)
-
-		jsonObject.put("id", ingerdient.id)
-		jsonObject.put("name", ingerdient.name)
-		jsonObject.put("unit", unitJson)
-		jsonObject.put("property", propertiesArray)
-		jsonObject
+		ingerdient.toJson
 	}
 
 	private def getUnitType(id: Int): UnitType = {

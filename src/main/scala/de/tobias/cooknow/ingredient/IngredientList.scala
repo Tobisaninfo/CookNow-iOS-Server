@@ -3,7 +3,7 @@ package de.tobias.cooknow.ingredient
 import java.sql.Connection
 
 import de.tobias.cooknow.model.{Ingredient, Property, UnitType}
-import org.json.{JSONArray, JSONObject}
+import org.json.JSONArray
 import spark.{Request, Response, Route}
 
 /**
@@ -31,27 +31,7 @@ class IngredientList(val conn: Connection) extends Route {
 		stat.close()
 
 		val jsonArray = new JSONArray()
-		list.map(item => {
-			val jsonObject = new JSONObject()
-
-			val unitJson = new JSONObject()
-			unitJson.put("id", item.unit.id)
-			unitJson.put("name", item.unit.name)
-
-			val propertiesArray = new JSONArray()
-			item.property.map(prop => {
-				val propertyJson = new JSONObject()
-				propertyJson.put("id", prop.id)
-				propertyJson.put("name", prop.name)
-				propertyJson
-			}).foreach(propertiesArray.put)
-
-			jsonObject.put("id", item.id)
-			jsonObject.put("name", item.name)
-			jsonObject.put("unit", unitJson)
-			jsonObject.put("propertty", propertiesArray)
-			jsonObject
-		}).foreach(jsonArray.put)
+		list.map(_.toJson).foreach(jsonArray.put)
 		jsonArray
 	}
 
