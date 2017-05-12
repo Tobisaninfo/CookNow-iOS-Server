@@ -47,7 +47,7 @@ object CookNowServerMain extends App {
 	})
 
 	// Barcode
-	get("/barcode", new BarcodeGet())
+	get("/barcode", new BarcodeGet(databaseConnection))
 
 	// DEBUG
 	exception(classOf[Exception], (exception, _, _) => {

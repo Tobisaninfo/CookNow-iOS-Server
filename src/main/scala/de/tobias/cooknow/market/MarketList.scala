@@ -23,6 +23,9 @@ class MarketList(val conn: Connection) extends Route {
 			list ::= market
 		}
 
+		result.close()
+		stat.close()
+
 		val jsonArray = new JSONArray()
 		list.map(_.toJson).foreach(jsonArray.put)
 		jsonArray
