@@ -4,7 +4,7 @@ import java.nio.file.Paths
 import java.sql.DriverManager
 
 import de.tobias.cooknow.barcode.BarcodeGet
-import de.tobias.cooknow.ingredient.IngredientList
+import de.tobias.cooknow.ingredient.{IngredientGet, IngredientList}
 import de.tobias.cooknow.market.{MarketList, MarketOfferList}
 import de.tobias.cooknow.recipe.{RecipeGet, RecipeList}
 import de.tobias.cooknow.server.settings.SettingsHandler
@@ -14,7 +14,7 @@ import spark.Spark._
   * Created by tobias on 02.05.17.
   */
 object CookNowServerMain extends App {
-	
+
 	// Settings
 	val settings = SettingsHandler.loader.load(Paths.get("settings.properties"))
 
@@ -24,6 +24,16 @@ object CookNowServerMain extends App {
 	private val databaseConnection = DriverManager.getConnection(databaseUrl, settings.db_username, settings.db_password)
 
 	port(8001)
+	secure("deploy/keystore.jks", settings.keystorePassword, null, null)
+
+	// Static Images
+	/*
+	 * Image Location: x -> id
+	 *		Recipe: /images/recipe/x.png
+	 *		Ingredient: /images/ingredient/x.png
+	 *		MarketLogo: /images/market/x.png
+	 */
+	externalStaticFileLocation(settings.download_folder)
 
 	// Recipe
 	path("/recipe", () => {
@@ -34,7 +44,7 @@ object CookNowServerMain extends App {
 	// Ingredient
 	path("/ingredient", () => {
 		get("/", new IngredientList(databaseConnection))
-		get("/:id", new RecipeGet(databaseConnection))
+		get("/:id", new IngredientGet(databaseConnection))
 	})
 
 	// Market

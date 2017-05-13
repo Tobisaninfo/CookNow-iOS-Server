@@ -1,3 +1,4 @@
+deploy/
 target/
 settings.properties
 .idea/workspace.xml
