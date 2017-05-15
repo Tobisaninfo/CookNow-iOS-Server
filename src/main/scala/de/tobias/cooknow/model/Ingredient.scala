@@ -1,31 +1,72 @@
 package de.tobias.cooknow.model
 
+import java.sql.Connection
+
+import de.tobias.cooknow.JsonConvertable
 import org.json.{JSONArray, JSONObject}
 
 /**
   * Created by tobias on 11.05.17.
   */
-class Ingredient(val id: Int, val name: String, val unit: UnitType, val property: List[Property]) {
+class Ingredient(val id: Int, val name: String, val unit: UnitType, val property: List[Property]) extends JsonConvertable  {
 	def toJson: JSONObject = {
 		val jsonObject = new JSONObject()
 
-		val unitJson = new JSONObject()
-		unitJson.put("id", unit.id)
-		unitJson.put("name", unit.name)
-
 		val propertiesArray = new JSONArray()
-		property.map(prop => {
-			val propertyJson = new JSONObject()
-			propertyJson.put("id", prop.id)
-			propertyJson.put("name", prop.name)
-			propertyJson
-		}).foreach(propertiesArray.put)
+		property.map(_.toJson).foreach(propertiesArray.put)
 
 		jsonObject.put("id", id)
 		jsonObject.put("name", name)
-		jsonObject.put("unit", unitJson)
+		jsonObject.put("unit", unit.toJson)
 		jsonObject.put("property", propertiesArray)
 		jsonObject
 	}
 
+}
+
+object Ingredient {
+	def apply(conn: Connection): List[Ingredient] = {
+		val stat = conn.prepareStatement("SELECT * FROM Ingredient")
+		val result = stat.executeQuery()
+
+		var list = List[Ingredient]()
+
+		while (result.next()) {
+			val id = result.getInt("id")
+			val name = result.getString("name")
+			val unitType = result.getInt("unitType")
+
+
+
+			val ingredient = new Ingredient(id, name, UnitType(unitType, conn), Property(id, conn))
+			list ::= ingredient
+		}
+
+		result.close()
+		stat.close()
+
+		list
+	}
+
+	def apply(id: Int, conn: Connection): Ingredient = {
+		val stat = conn.prepareStatement("SELECT * FROM Ingredient WHERE id = ?")
+		stat.setInt(1, id)
+
+		val result = stat.executeQuery()
+
+		val ingerdient = if (result.next()) {
+			val id = result.getInt("id")
+			val name = result.getString("name")
+			val unitType = result.getInt("unitType")
+
+
+			new Ingredient(id, name, UnitType(unitType, conn), Property(id, conn))
+		} else {
+			null
+		}
+
+		result.close()
+		stat.close()
+		ingerdient
+	}
 }

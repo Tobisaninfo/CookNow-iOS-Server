@@ -8,6 +8,7 @@ import de.tobias.cooknow.ingredient.{IngredientGet, IngredientList}
 import de.tobias.cooknow.market.{MarketList, MarketOfferList}
 import de.tobias.cooknow.recipe.{RecipeGet, RecipeList}
 import de.tobias.cooknow.server.settings.SettingsHandler
+import de.tobias.cooknow.transformer.JsonTransformer
 import spark.Spark._
 
 /**
@@ -37,27 +38,27 @@ object CookNowServerMain extends App {
 
 	// Recipe
 	path("/recipe", () => {
-		get("/", new RecipeList(databaseConnection))
-		get("/:id", new RecipeGet(databaseConnection))
+		get("/", new RecipeList(databaseConnection), new JsonTransformer)
+		get("/:id", new RecipeGet(databaseConnection), new JsonTransformer)
 	})
 
 	// Ingredient
 	path("/ingredient", () => {
-		get("/", new IngredientList(databaseConnection))
-		get("/:id", new IngredientGet(databaseConnection))
+		get("/", new IngredientList(databaseConnection), new JsonTransformer)
+		get("/:id", new IngredientGet(databaseConnection), new JsonTransformer)
 	})
 
 	// Market
 	path("/market", () => {
-		get("/", new MarketList(databaseConnection))
+		get("/", new MarketList(databaseConnection), new JsonTransformer)
 
 		path("/offer", () => {
-			get("/:id", new MarketOfferList(databaseConnection))
+			get("/:id", new MarketOfferList(databaseConnection), new JsonTransformer)
 		})
 	})
 
 	// Barcode
-	get("/barcode", new BarcodeGet(databaseConnection))
+	get("/barcode", new BarcodeGet(databaseConnection), new JsonTransformer)
 
 	// DEBUG
 	exception(classOf[Exception], (exception, _, _) => {

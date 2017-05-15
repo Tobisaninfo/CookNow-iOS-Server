@@ -11,31 +11,18 @@ import spark.{Request, Response, Route, Spark}
 class RecipeGet(val conn: Connection) extends Route {
 
 	override def handle(request: Request, response: Response): AnyRef = {
-		val stat = conn.prepareStatement("SELECT * FROM Recipe WHERE id=?")
-		stat.setInt(1, request.params(":id").toInt)
+		val recipe = try {
+			val id = request.params(":id").toInt
+			val recipe = Recipe(id, conn)
 
-		val result = stat.executeQuery()
+			if (recipe == null) {
+				Spark.halt(400, "Bad Request: Recipe not exists")
+			}
 
-		var recipe: Recipe = null
-
-		while (result.next()) {
-			val id = result.getInt("id")
-			val name = result.getString("name")
-			val description = result.getString("description")
-			val time = result.getInt("time")
-			val difficulty = result.getInt("difficulty")
-
-			recipe = new Recipe(id, name, description, difficulty, time)
+			recipe
+		} catch {
+			case e: NumberFormatException => Spark.halt(400, "Bad request: " + e.getLocalizedMessage); null
 		}
-
-		result.close()
-		stat.close()
-
-		if (recipe == null) {
-			Spark.halt(400, "Bad Request: Recipe not exists")
-		}
-
-		// Build JsonObject
-		recipe.toJson
+		recipe
 	}
 }
