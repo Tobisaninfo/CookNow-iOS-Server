@@ -2,13 +2,13 @@ package de.tobias.cooknow.model
 
 import java.sql.Connection
 
-import de.tobias.cooknow.JsonConvertable
+import de.tobias.cooknow.JsonConverter
 import org.json.{JSONArray, JSONObject}
 
 /**
   * Created by tobias on 10.05.17.
   */
-class Recipe(val id: Int, val name: String, val descript: String, val difficulty: Int, val time: Int, val ingredients: List[IngredientUse]) extends JsonConvertable {
+class Recipe(val id: Int, val name: String, val descript: String, val difficulty: Int, val time: Int, val ingredients: List[IngredientUse]) extends JsonConverter {
 
 	def toJson: JSONObject = {
 		val jsonObject = new JSONObject()

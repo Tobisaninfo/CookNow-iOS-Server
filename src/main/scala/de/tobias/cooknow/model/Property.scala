@@ -2,13 +2,13 @@ package de.tobias.cooknow.model
 
 import java.sql.Connection
 
-import de.tobias.cooknow.JsonConvertable
+import de.tobias.cooknow.JsonConverter
 import org.json.JSONObject
 
 /**
   * Created by tobias on 11.05.17.
   */
-class Property(val id: Int, val name: String) extends JsonConvertable  {
+class Property(val id: Int, val name: String) extends JsonConverter  {
 	def toJson: JSONObject = {
 		val propertyJson = new JSONObject()
 		propertyJson.put("id", id)

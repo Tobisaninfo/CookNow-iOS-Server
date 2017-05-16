@@ -15,7 +15,9 @@ import de.tobias.cooknow.transformer.JsonTransformer
 import spark.Spark._
 
 /**
-  * Created by tobias on 02.05.17.
+  * Server Main Class.
+  *
+  * @author tobias
   */
 object CookNowServerMain extends App {
 

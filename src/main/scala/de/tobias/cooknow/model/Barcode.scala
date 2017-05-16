@@ -2,13 +2,13 @@ package de.tobias.cooknow.model
 
 import java.sql.Connection
 
-import de.tobias.cooknow.JsonConvertable
+import de.tobias.cooknow.JsonConverter
 import org.json.JSONObject
 
 /**
   * Created by tobias on 12.05.17.
   */
-class Barcode(val code: String, val name: String, val price: Float = -1) extends JsonConvertable  {
+class Barcode(val code: String, val name: String, val price: Float = -1) extends JsonConverter  {
 	def insert(connection: Connection) = {
 		val stat = connection.prepareStatement("INSERT INTO Barcode (name, code, price) VALUES (?, ?, ?)")
 		stat.setString(1, name)
