@@ -8,11 +8,10 @@ import org.json.JSONObject
 /**
   * Created by tobias on 11.05.17.
   */
-class MarketOfferEntry(id: Int, name: String, price: Float, expires: Date) {
+class MarketOfferEntry(name: String, price: Float, expires: Date) {
 
 	def toJson: JSONObject = {
 		val jsonObject = new JSONObject()
-		jsonObject.put("id", id)
 		jsonObject.put("name", name)
 		jsonObject.put("price", price)
 		jsonObject.put("expires", expires)
@@ -29,12 +28,11 @@ object MarketOfferEntry {
 		var list = List[MarketOfferEntry]()
 
 		while (result.next()) {
-			val id = result.getInt("id")
 			val name = result.getString("name")
 			val price = result.getFloat("price")
 			val expires = result.getDate("expires")
 
-			val entry = new MarketOfferEntry(id, name, price, expires)
+			val entry = new MarketOfferEntry(name, price, expires)
 			list ::= entry
 		}
 

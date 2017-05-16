@@ -2,12 +2,15 @@ package de.tobias.cooknow
 
 import java.nio.file.Paths
 import java.sql.DriverManager
+import java.util.Timer
+import java.util.concurrent.TimeUnit
 
 import de.tobias.cooknow.barcode.BarcodeGet
 import de.tobias.cooknow.ingredient.{IngredientGet, IngredientList}
 import de.tobias.cooknow.market.{MarketList, MarketOfferList}
 import de.tobias.cooknow.recipe.{RecipeGet, RecipeList}
 import de.tobias.cooknow.server.settings.SettingsHandler
+import de.tobias.cooknow.tasks.OfferScheduler
 import de.tobias.cooknow.transformer.JsonTransformer
 import spark.Spark._
 
@@ -23,6 +26,9 @@ object CookNowServerMain extends App {
 	private val databaseUrl = s"jdbc:mysql://${settings.db_host}:${settings.db_port}/${settings.db_database}?" +
 		s"autoReconnect=true&wait_timeout=86400&serverTimezone=Europe/Berlin"
 	private val databaseConnection = DriverManager.getConnection(databaseUrl, settings.db_username, settings.db_password)
+
+	val timer = new Timer("Offer Timer")
+	timer.schedule(new OfferScheduler(databaseConnection), TimeUnit.SECONDS.toMillis(10), TimeUnit.MINUTES.toMillis(1))
 
 	port(8001)
 	secure("deploy/keystore.jks", settings.keystorePassword, null, null)
