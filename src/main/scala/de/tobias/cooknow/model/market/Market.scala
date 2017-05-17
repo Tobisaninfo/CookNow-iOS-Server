@@ -7,7 +7,7 @@ import org.json.JSONObject
 /**
   * Created by tobias on 11.05.17.
   */
-class Market(id: Int, name: String) {
+class Market(val id: Int, val name: String) {
 
 	def toJson:JSONObject = {
 		val jsonObject = new JSONObject()
@@ -34,5 +34,24 @@ object Market {
 		result.close()
 		stat.close()
 		list
+	}
+
+	def apply(conn: Connection, name: String): Market = {
+		val stat = conn.prepareStatement("SELECT * FROM Market WHERE name like ?")
+		stat.setString(1, name)
+		val result = stat.executeQuery()
+
+		val market = if(result.next()) {
+			val id = result.getInt("id")
+			val name = result.getString("name")
+
+			new Market(id, name)
+		} else {
+			null
+		}
+
+		result.close()
+		stat.close()
+		market
 	}
 }

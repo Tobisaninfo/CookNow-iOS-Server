@@ -18,7 +18,7 @@ class MarketOfferParserReal extends MarketOfferParser {
 	override def fetch(): List[MarketOfferEntry] = {
 		var offerList = List[MarketOfferEntry]()
 
-		val result = Unirest.get("https://www.real.de/markt/wochenangebote-nach-kategorien/alle-angebote/").asBinary()
+		val result = Unirest.get("https://www.real.de/markt/wochenangebote-nach-kategorien/lebensmittel/").asBinary()
 
 		val browser = JsoupBrowser()
 		val document = browser.parseInputStream(result.getBody, "utf-8")
