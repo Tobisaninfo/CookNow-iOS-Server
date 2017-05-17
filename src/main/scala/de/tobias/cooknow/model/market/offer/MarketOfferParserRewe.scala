@@ -1,6 +1,8 @@
 package de.tobias.cooknow.model.market.offer
 
 import java.nio.file.{Files, Paths}
+import java.time.DayOfWeek.SATURDAY
+import java.time.temporal.TemporalAdjusters.next
 import java.time.{LocalDate, ZoneId}
 import java.util.Date
 
@@ -18,17 +20,17 @@ class MarketOfferParserRewe extends MarketOfferParser {
 		var offerList = List[MarketOfferEntry]()
 
 		val result = Unirest.get("https://www.rewe.de/angebote/")
-			.header("User-Agent", "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36")
+			.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
+			.header("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/603.2.4 (KHTML, like Gecko) Version/10.1.1 Safari/603.2.4")
+			.header("DNT", "1")
 			.asBinary()
 
 		val browser = JsoupBrowser()
 		val document = browser.parseInputStream(result.getBody, "utf-8")
 
-		Files.write(Paths.get("rewe.html"), document.toHtml.toString.getBytes)
-
-		val days = (document >> element(".days")).text
-		val localDate = LocalDate.now().plusDays(days.toInt)
-		val date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault).toInstant)
+		val today = LocalDate.now()
+		val nextSunday = today.`with`(next(SATURDAY))
+		val date = Date.from(nextSunday.atStartOfDay(ZoneId.systemDefault).toInstant)
 
 		val list = document >> elementList(".product")
 
