@@ -19,7 +19,6 @@ class MarketOfferEntry(val name: String, val price: Float, val expires: Date) {
 		stat.executeUpdate()
 	}
 
-
 	def toJson: JSONObject = {
 		val jsonObject = new JSONObject()
 		jsonObject.put("name", name)
@@ -27,6 +26,8 @@ class MarketOfferEntry(val name: String, val price: Float, val expires: Date) {
 		jsonObject.put("expires", expires)
 		jsonObject
 	}
+
+	override def toString = s"MarketOfferEntry($name, $price)"
 }
 
 object MarketOfferEntry {

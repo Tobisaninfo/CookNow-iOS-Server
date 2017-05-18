@@ -16,7 +16,6 @@ import net.ruippeixotog.scalascraper.scraper.ContentExtractors.element
   * Created by tobias on 11.05.17.
   */
 class MarketOfferParserAldi extends MarketOfferParser {
-	private val dateFormatter = new SimpleDateFormat("dd.MM.yyyy")
 
 	override def fetch(): List[MarketOfferEntry] = {
 		var offerList = List[MarketOfferEntry]()
