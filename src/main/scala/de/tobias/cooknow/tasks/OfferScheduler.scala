@@ -25,7 +25,7 @@ class OfferScheduler(connection: Connection) extends TimerTask {
 				try {
 					offer.insert(connection, market)
 				} catch {
-					case e: SQLException => println(e.getLocalizedMessage)
+					case _: SQLException =>
 				}
 			}
 		}

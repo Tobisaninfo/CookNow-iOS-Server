@@ -1,7 +1,10 @@
 package de.tobias.cooknow.model.market.offer
 
 import java.text.SimpleDateFormat
-import java.util.Locale
+import java.time.DayOfWeek.SATURDAY
+import java.time.temporal.TemporalAdjusters.next
+import java.time.{LocalDate, ZoneId}
+import java.util.{Date, Locale}
 
 import com.mashape.unirest.http.Unirest
 import de.tobias.cooknow.model.market.MarketOfferEntry
@@ -23,9 +26,9 @@ class MarketOfferParserAldi extends MarketOfferParser {
 		val browser = JsoupBrowser()
 		val document = browser.parseInputStream(result.getBody, "utf-8")
 
-		var dateString = (document >> element(".text-gray")).text
-		dateString = dateString.substring(dateString.lastIndexOf(" ") + 1)
-		val date = dateFormatter.parse(dateString)
+		val today = LocalDate.now()
+		val nextSunday = today.`with`(next(SATURDAY))
+		val date = Date.from(nextSunday.atStartOfDay(ZoneId.systemDefault).toInstant)
 
 		val days = document >> elementList(".mod-offer-stage__section")
 		val list = days.head >> elementList(".mod-article-tile__content")
