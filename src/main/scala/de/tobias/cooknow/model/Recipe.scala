@@ -8,19 +8,28 @@ import org.json.{JSONArray, JSONObject}
 /**
   * Created by tobias on 10.05.17.
   */
-class Recipe(val id: Int, val name: String, val descript: String, val difficulty: Int, val time: Int, val ingredients: List[IngredientUse]) extends JsonConverter {
+class Recipe(val id: Int, val name: String, val description: String, val difficulty: Int, val time: Int,
+			 val ingredients: List[IngredientUse], val steps: List[Step], val items: List[Item]) extends JsonConverter {
 
 	def toJson: JSONObject = {
 		val jsonObject = new JSONObject()
 		jsonObject.put("id", id)
 		jsonObject.put("name", name)
-		jsonObject.put("description", descript)
+		jsonObject.put("description", description)
 		jsonObject.put("time", time)
 		jsonObject.put("difficulty", difficulty)
 
 		val ingredientJsonArray = new JSONArray()
 		ingredients.map(_.toJson).foreach(ingredientJsonArray.put)
-		jsonObject.put("ingredient", ingredientJsonArray)
+		jsonObject.put("ingredients", ingredientJsonArray)
+
+		val itemJsonArray = new JSONArray()
+		items.map(_.toJson).foreach(itemJsonArray.put)
+		jsonObject.put("items", itemJsonArray)
+
+		val stepsJsonArray = new JSONArray()
+		steps.map(_.toJson).foreach(stepsJsonArray.put)
+		jsonObject.put("steps", stepsJsonArray)
 
 		jsonObject
 	}
@@ -40,7 +49,8 @@ object Recipe {
 			val time = result.getInt("time")
 			val difficulty = result.getInt("difficulty")
 
-			val recipe = new Recipe(id, name, description, difficulty, time, IngredientUse(id, conn))
+			val recipe = new Recipe(id, name, description, difficulty, time, IngredientUse(id, conn),
+				Step(id, conn), Item(id, conn))
 			list ::= recipe
 		}
 
@@ -61,7 +71,8 @@ object Recipe {
 			val time = result.getInt("time")
 			val difficulty = result.getInt("difficulty")
 
-			new Recipe(id, name, description, difficulty, time, IngredientUse(id, conn))
+			new Recipe(id, name, description, difficulty, time, IngredientUse(id, conn),
+				Step(id, conn), Item(id, conn))
 		} else {
 			null
 		}
