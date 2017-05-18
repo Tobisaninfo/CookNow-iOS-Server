@@ -37,7 +37,8 @@ class MarketOfferParserAldi extends MarketOfferParser {
 			val name = (i >> element(".mod-article-tile__title")).text
 			val price = (i >> element(".price__main ")).text
 
-			val offer = new MarketOfferEntry(name, parse(price, Locale.GERMAN), date)
+			val priceValue = parse(price, Locale.GERMAN) * 0.01f
+			val offer = new MarketOfferEntry(name, priceValue, date)
 			offerList ::= offer
 		})
 		offerList
