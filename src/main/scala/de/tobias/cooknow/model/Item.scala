@@ -19,7 +19,7 @@ class Item(val id: Int, val name: String) extends JsonConverter {
 
 object Item {
 	def apply(recipeID: Int, connection: Connection): List[Item] = {
-		val stat = connection.prepareStatement("SELECT * FROM Item WHERE recipeID = ?")
+		val stat = connection.prepareStatement("SELECT * FROM Item i JOIN ItemUse u ON u.itemID = i.id  WHERE recipeID = ?")
 		stat.setInt(1, recipeID)
 		val result = stat.executeQuery()
 
