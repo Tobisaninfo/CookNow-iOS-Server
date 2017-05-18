@@ -27,7 +27,7 @@ class MarketOfferParserAldi extends MarketOfferParser {
 		dateString = dateString.substring(dateString.lastIndexOf(" ") + 1)
 		val date = dateFormatter.parse(dateString)
 
-		val days = document >> elementlist(".mod-offer-stage__section")
+		val days = document >> elementList(".mod-offer-stage__section")
 		val list = days.head >> elementList(".mod-article-tile__content")
 
 		list.foreach(i => {

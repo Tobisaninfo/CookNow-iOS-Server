@@ -54,7 +54,7 @@ object Ingredient {
 
 		val result = stat.executeQuery()
 
-		val ingerdient = if (result.next()) {
+		val ingredient = if (result.next()) {
 			val id = result.getInt("id")
 			val name = result.getString("name")
 			val unitType = result.getInt("unitType")
@@ -67,6 +67,6 @@ object Ingredient {
 
 		result.close()
 		stat.close()
-		ingerdient
+		ingredient
 	}
 }

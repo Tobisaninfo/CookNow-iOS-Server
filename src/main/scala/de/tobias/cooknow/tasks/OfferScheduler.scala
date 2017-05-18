@@ -1,6 +1,6 @@
 package de.tobias.cooknow.tasks
 
-import java.sql.Connection
+import java.sql.{Connection, SQLException}
 import java.util.TimerTask
 
 import de.tobias.cooknow.model.market.{Market, MarketOfferEntry}
@@ -22,7 +22,11 @@ class OfferScheduler(connection: Connection) extends TimerTask {
 			val market = Market(connection, key)
 
 			for (offer <- offers) {
-				offer.insert(connection, market)
+				try {
+					offer.insert(connection, market)
+				} catch {
+					case e: SQLException => println(e.getLocalizedMessage)
+				}
 			}
 		}
 	}
