@@ -19,8 +19,9 @@ class Tip(val id: Int, val title: String, val content: String) extends JsonConve
 }
 
 object Tip {
-	def apply(connection: Connection): List[Tip] = {
-		val stat = connection.prepareStatement("SELECT * FROM Tip")
+	def apply(category: Int, connection: Connection): List[Tip] = {
+		val stat = connection.prepareStatement("SELECT * FROM Tip WHERE categoryID = ?")
+		stat.setInt(1, category)
 		val result = stat.executeQuery()
 
 		var list = List[Tip]()
