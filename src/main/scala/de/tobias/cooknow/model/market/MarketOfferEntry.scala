@@ -4,12 +4,13 @@ import java.sql
 import java.sql.Connection
 import java.util.Date
 
+import de.tobias.cooknow.JsonConverter
 import org.json.JSONObject
 
 /**
   * Created by tobias on 11.05.17.
   */
-class MarketOfferEntry(val name: String, val price: Float, val expires: Date) {
+class MarketOfferEntry(val name: String, val price: Float, val expires: Date) extends JsonConverter {
 	def insert(connection: Connection, market: Market): Unit = {
 		val stat = connection.prepareStatement("INSERT INTO MarketOffer (marketID, name, price, expires) VALUES (?, ?, ?, ?)")
 		stat.setInt(1, market.id)

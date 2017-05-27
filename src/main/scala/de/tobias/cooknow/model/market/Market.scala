@@ -2,12 +2,13 @@ package de.tobias.cooknow.model.market
 
 import java.sql.Connection
 
+import de.tobias.cooknow.JsonConverter
 import org.json.JSONObject
 
 /**
   * Created by tobias on 11.05.17.
   */
-class Market(val id: Int, val name: String) {
+class Market(val id: Int, val name: String) extends JsonConverter {
 
 	def toJson:JSONObject = {
 		val jsonObject = new JSONObject()
