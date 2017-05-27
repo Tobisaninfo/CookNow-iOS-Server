@@ -10,12 +10,12 @@ import org.json.JSONObject
 /**
   * Created by tobias on 11.05.17.
   */
-class MarketOfferEntry(val name: String, val price: Float, val expires: Date) extends JsonConverter {
+class MarketOfferEntry(val name: String, val price: Double, val expires: Date) extends JsonConverter {
 	def insert(connection: Connection, market: Market): Unit = {
 		val stat = connection.prepareStatement("INSERT INTO MarketOffer (marketID, name, price, expires) VALUES (?, ?, ?, ?)")
 		stat.setInt(1, market.id)
 		stat.setString(2, name)
-		stat.setFloat(3, price)
+		stat.setDouble(3, price)
 		stat.setDate(4, new sql.Date(expires.getTime))
 		stat.executeUpdate()
 	}
@@ -46,7 +46,7 @@ object MarketOfferEntry {
 
 		while (result.next()) {
 			val name = result.getString("name")
-			val price = result.getFloat("price")
+			val price = result.getDouble("price")
 			val expires = result.getDate("expires")
 
 			val entry = new MarketOfferEntry(name, price, expires)
