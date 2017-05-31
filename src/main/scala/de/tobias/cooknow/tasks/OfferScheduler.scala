@@ -18,15 +18,19 @@ class OfferScheduler(connection: Connection) extends TimerTask {
 	override def run(): Unit = {
 		MarketOfferEntry.dropTable(connection)
 		for ((key, value) <- markets) {
-			val offers = value.fetch()
-			val market = Market(connection, key)
+			try {
+				val offers = value.fetch()
+				val market = Market(connection, key)
 
-			for (offer <- offers) {
-				try {
-					offer.insert(connection, market)
-				} catch {
-					case _: SQLException =>
+				for (offer <- offers) {
+					try {
+						offer.insert(connection, market)
+					} catch {
+						case _: SQLException =>
+					}
 				}
+			} catch {
+				case _: Exception =>
 			}
 		}
 	}
