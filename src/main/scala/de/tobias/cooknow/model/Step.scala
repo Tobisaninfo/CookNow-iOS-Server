@@ -8,11 +8,11 @@ import org.json.JSONObject
 /**
   * Created by tobias on 18.05.17.
   */
-class Step(val id: Int, val name: String, val order: Int) extends JsonConverter {
+class Step(val id: Int, val content: String, val order: Int) extends JsonConverter {
 	override def toJson: JSONObject = {
 		val jsonObject = new JSONObject()
 		jsonObject.put("id", id)
-		jsonObject.put("name", name)
+		jsonObject.put("content", content)
 		jsonObject.put("order", order)
 		jsonObject
 	}
