@@ -31,7 +31,7 @@ object CookNowServerMain extends App {
 	private val databaseConnection = DriverManager.getConnection(databaseUrl, settings.db_username, settings.db_password)
 
 	val timer = new Timer("Offer Timer")
-	timer.schedule(new OfferScheduler(databaseConnection), TimeUnit.SECONDS.toMillis(10), TimeUnit.MINUTES.toMillis(1))
+	timer.schedule(new OfferScheduler(databaseConnection), TimeUnit.SECONDS.toMillis(10), TimeUnit.DAYS.toMillis(1))
 
 	port(8001)
 	secure("deploy/keystore.jks", settings.keystorePassword, null, null)

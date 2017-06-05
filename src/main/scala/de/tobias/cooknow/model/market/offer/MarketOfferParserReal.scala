@@ -18,24 +18,28 @@ class MarketOfferParserReal extends MarketOfferParser {
 	override def fetch(): List[MarketOfferEntry] = {
 		var offerList = List[MarketOfferEntry]()
 
-		val result = Unirest.get("https://www.real.de/markt/wochenangebote-nach-kategorien/lebensmittel/").asBinary()
+		try {
+			val result = Unirest.get("https://www.real.de/markt/wochenangebote-nach-kategorien/lebensmittel/").asBinary()
 
-		val browser = JsoupBrowser()
-		val document = browser.parseInputStream(result.getBody, "utf-8")
+			val browser = JsoupBrowser()
+			val document = browser.parseInputStream(result.getBody, "utf-8")
 
-		var dateString = (document >> element(".text-gray")).text
-		dateString = dateString.substring(dateString.lastIndexOf(" ") + 1)
-		val date = dateFormatter.parse(dateString)
+			var dateString = (document >> element(".text-gray")).text
+			dateString = dateString.substring(dateString.lastIndexOf(" ") + 1)
+			val date = dateFormatter.parse(dateString)
 
-		val list = document >> elementList(".product")
+			val list = document >> elementList(".product")
 
-		list.foreach(i => {
-			val name = (i >> element("._title")).text
-			val price = (i >> element(".price ")).attr("title")
+			list.foreach(i => {
+				val name = (i >> element("._title")).text
+				val price = (i >> element(".price ")).attr("title")
 
-			val offer = new MarketOfferEntry(name, parse(price, Locale.GERMAN), date)
-			offerList ::= offer
-		})
+				val offer = new MarketOfferEntry(name, parse(price, Locale.GERMAN), date)
+				offerList ::= offer
+			})
+		} catch {
+			case e: NoSuchElementException =>
+		}
 		offerList
 	}
 }
