@@ -3,17 +3,22 @@ package de.tobias.cooknow.model
 import java.sql.Connection
 
 import de.tobias.cooknow.JsonConverter
-import org.json.JSONObject
+import org.json.{JSONArray, JSONObject}
 
 /**
   * Created by tobias on 18.05.17.
   */
-class Step(val id: Int, val content: String, val order: Int) extends JsonConverter {
+class Step(val id: Int, val content: String, val order: Int, val items: List[Item]) extends JsonConverter {
 	override def toJson: JSONObject = {
 		val jsonObject = new JSONObject()
 		jsonObject.put("id", id)
 		jsonObject.put("content", content)
 		jsonObject.put("order", order)
+
+		val itemJsonArray = new JSONArray()
+		items.map(_.toJson).foreach(itemJsonArray.put)
+		jsonObject.put("items", itemJsonArray)
+
 		jsonObject
 	}
 }
@@ -30,7 +35,7 @@ object Step {
 			val id = result.getInt("id")
 			val name = result.getString("content")
 			val order = result.getInt("order")
-			val step = new Step(id, name, order)
+			val step = new Step(id, name, order, Item(id, connection))
 			list ::= step
 		}
 

@@ -9,7 +9,7 @@ import org.json.{JSONArray, JSONObject}
   * Created by tobias on 10.05.17.
   */
 class Recipe(val id: Int, val name: String, val description: String, val difficulty: Int, val time: Int,
-			 val ingredients: List[IngredientUse], val steps: List[Step], val items: List[Item]) extends JsonConverter {
+			 val ingredients: List[IngredientUse], val steps: List[Step]) extends JsonConverter {
 
 	def toJson: JSONObject = {
 		val jsonObject = new JSONObject()
@@ -22,10 +22,6 @@ class Recipe(val id: Int, val name: String, val description: String, val difficu
 		val ingredientJsonArray = new JSONArray()
 		ingredients.map(_.toJson).foreach(ingredientJsonArray.put)
 		jsonObject.put("ingredients", ingredientJsonArray)
-
-		val itemJsonArray = new JSONArray()
-		items.map(_.toJson).foreach(itemJsonArray.put)
-		jsonObject.put("items", itemJsonArray)
 
 		val stepsJsonArray = new JSONArray()
 		steps.map(_.toJson).foreach(stepsJsonArray.put)
@@ -50,7 +46,7 @@ object Recipe {
 			val difficulty = result.getInt("difficulty")
 
 			val recipe = new Recipe(id, name, description, difficulty, time, IngredientUse(id, conn),
-				Step(id, conn), Item(id, conn))
+				Step(id, conn))
 			list ::= recipe
 		}
 
@@ -72,7 +68,7 @@ object Recipe {
 			val difficulty = result.getInt("difficulty")
 
 			new Recipe(id, name, description, difficulty, time, IngredientUse(id, conn),
-				Step(id, conn), Item(id, conn))
+				Step(id, conn))
 		} else {
 			null
 		}
