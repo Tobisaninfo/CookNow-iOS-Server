@@ -30,6 +30,8 @@ object CookNowServerMain extends App {
 		s"autoReconnect=true&wait_timeout=86400&serverTimezone=Europe/Berlin"
 	private val databaseConnection = DriverManager.getConnection(databaseUrl, settings.db_username, settings.db_password)
 
+	MySQLStore.init(databaseConnection)
+
 	val timer = new Timer("Offer Timer")
 	timer.schedule(new OfferScheduler(databaseConnection), TimeUnit.SECONDS.toMillis(10), TimeUnit.DAYS.toMillis(1))
 
