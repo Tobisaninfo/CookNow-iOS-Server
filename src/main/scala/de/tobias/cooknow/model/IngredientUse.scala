@@ -18,9 +18,10 @@ class IngredientUse(val ingredient: Ingredient, val amount: Double) extends Json
 }
 
 object IngredientUse {
-	def apply(recipeId: Int, connection: Connection): List[IngredientUse] = {
-		val stat = connection.prepareStatement("SELECT * FROM IngredientUse u JOIN Ingredient i ON u.ingredientID = i.id WHERE u.recipeID = ?")
-		stat.setInt(1, recipeId)
+	def apply(stepID: Int, connection: Connection): List[IngredientUse] = {
+		val stat = connection.prepareStatement("SELECT * FROM IngredientUse u JOIN Ingredient i ON u.ingredientID = i.id WHERE u.stepID = ?")
+		stat.setInt(1, stepID)
+		println(stat)
 		val result = stat.executeQuery()
 
 		var list = List[IngredientUse]()

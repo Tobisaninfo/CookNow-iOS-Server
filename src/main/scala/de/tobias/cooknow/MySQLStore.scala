@@ -40,7 +40,7 @@ object MySQLStore {
 		createTable(
 			"""CREATE TABLE IF NOT EXISTS `IngredientUse` (
 			  |  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-			  |  `recipeID` int(11) DEFAULT NULL,
+			  |  `stepID` int(11) DEFAULT NULL,
 			  |  `ingredientID` int(11) DEFAULT NULL,
 			  |  `amount` float DEFAULT NULL,
 			  |  PRIMARY KEY (`id`)
@@ -81,7 +81,6 @@ object MySQLStore {
 			"""CREATE TABLE IF NOT EXISTS `Recipe` (
 			  |  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  |  `name` varchar(100) DEFAULT NULL,
-			  |  `description` text,
 			  |  `time` int(11) DEFAULT NULL,
 			  |  `difficulty` int(11) DEFAULT NULL,
 			  |  PRIMARY KEY (`id`)
