@@ -36,8 +36,6 @@ object Ingredient {
 			val name = result.getString("name")
 			val unitType = result.getInt("unitType")
 
-
-
 			val ingredient = new Ingredient(id, name, UnitType(unitType, conn), Property(id, conn))
 			list ::= ingredient
 		}
@@ -48,25 +46,32 @@ object Ingredient {
 		list
 	}
 
+	private var cache = Map[Int, Ingredient]()
+
 	def apply(id: Int, conn: Connection): Ingredient = {
-		val stat = conn.prepareStatement("SELECT * FROM Ingredient WHERE id = ?")
-		stat.setInt(1, id)
-
-		val result = stat.executeQuery()
-
-		val ingredient = if (result.next()) {
-			val id = result.getInt("id")
-			val name = result.getString("name")
-			val unitType = result.getInt("unitType")
-
-
-			new Ingredient(id, name, UnitType(unitType, conn), Property(id, conn))
+		if (cache.contains(id)) {
+			cache(id)
 		} else {
-			null
-		}
+			val stat = conn.prepareStatement("SELECT * FROM Ingredient WHERE id = ?")
+			stat.setInt(1, id)
 
-		result.close()
-		stat.close()
-		ingredient
+			val result = stat.executeQuery()
+
+			val ingredient = if (result.next()) {
+				val id = result.getInt("id")
+				val name = result.getString("name")
+				val unitType = result.getInt("unitType")
+
+
+				new Ingredient(id, name, UnitType(unitType, conn), Property(id, conn))
+			} else {
+				null
+			}
+
+			result.close()
+			stat.close()
+			cache += id -> ingredient
+			ingredient
+		}
 	}
 }

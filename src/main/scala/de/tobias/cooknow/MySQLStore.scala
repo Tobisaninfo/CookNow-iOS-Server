@@ -43,6 +43,7 @@ object MySQLStore {
 			  |  `stepID` int(11) DEFAULT NULL,
 			  |  `ingredientID` int(11) DEFAULT NULL,
 			  |  `amount` float DEFAULT NULL,
+			  |  `price` float DEFAULT NULL,
 			  |  PRIMARY KEY (`id`)
 			  |) ENGINE=InnoDB DEFAULT CHARSET=latin1;""".stripMargin)
 		createTable(

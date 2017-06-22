@@ -8,11 +8,12 @@ import org.json.JSONObject
 /**
   * Created by tobias on 15.05.17.
   */
-class IngredientUse(val ingredient: Ingredient, val amount: Double) extends JsonConverter {
+class IngredientUse(val ingredient: Ingredient, val amount: Double, price: Double) extends JsonConverter {
 	override def toJson: JSONObject = {
 		val jsonObject = new JSONObject()
 		jsonObject.put("ingredient", ingredient.toJson)
 		jsonObject.put("amount", amount)
+		jsonObject.put("price", price)
 		jsonObject
 	}
 }
@@ -28,8 +29,9 @@ object IngredientUse {
 		while (result.next()) {
 			val amount = result.getDouble("amount")
 			val ingredientId = result.getInt("ingredientId")
+			val price = result.getDouble("price")
 
-			val use = new IngredientUse(Ingredient(ingredientId, connection), amount)
+			val use = new IngredientUse(Ingredient(ingredientId, connection), amount, price)
 			list ::= use
 		}
 		result.close()
