@@ -23,7 +23,7 @@ object BarcodeParser {
 			val name = getName(document)
 			val description = getDescription(document)
 
-			new Barcode(barcode, if (!name.isEmpty) { name } else { description } )
+			new Barcode(barcode, null, if (!name.isEmpty) { name } else { description } )
 		} catch {
 			case _: Exception => null
 		}

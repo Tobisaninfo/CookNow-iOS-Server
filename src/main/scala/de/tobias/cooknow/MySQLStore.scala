@@ -17,10 +17,10 @@ object MySQLStore {
 		createTable(
 			"""CREATE TABLE IF NOT EXISTS `Barcode` (
 			  |  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-			  |  `ingreidentID` int(11) DEFAULT NULL,
+			  |  `ingredientID` int(11) DEFAULT NULL,
 			  |  `name` varchar(150) DEFAULT NULL,
 			  |  `code` varchar(13) DEFAULT NULL,
-			  |  `price` float DEFAULT NULL,
+			  |  `amount` double DEFAULT NULL,
 			  |  PRIMARY KEY (`id`)
 			  |) ENGINE=InnoDB DEFAULT CHARSET=latin1;""".stripMargin)
 		createTable(

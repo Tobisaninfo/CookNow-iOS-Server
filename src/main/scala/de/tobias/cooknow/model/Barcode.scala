@@ -8,12 +8,12 @@ import org.json.JSONObject
 /**
   * Created by tobias on 12.05.17.
   */
-class Barcode(val code: String, val name: String, val price: Float = -1) extends JsonConverter  {
+class Barcode(val code: String, val ingredient: Ingredient, val name: String, val amount: Double = 0) extends JsonConverter  {
 	def insert(connection: Connection) = {
-		val stat = connection.prepareStatement("INSERT INTO Barcode (name, code, price) VALUES (?, ?, ?)")
+		val stat = connection.prepareStatement("INSERT INTO Barcode (name, code, amount) VALUES (?, ?, ?)")
 		stat.setString(1, name)
 		stat.setString(2, code)
-		stat.setFloat(3, price)
+		stat.setDouble(3, amount)
 		stat.executeUpdate()
 		stat.close()
 	}
@@ -22,7 +22,8 @@ class Barcode(val code: String, val name: String, val price: Float = -1) extends
 		val jsonObject = new JSONObject()
 		jsonObject.put("code", code)
 		jsonObject.put("name", name)
-		jsonObject.put("price", price)
+		jsonObject.put("amount", amount)
+		jsonObject.put("ingredient", ingredient.toJson)
 		jsonObject
 	}
 
@@ -36,12 +37,13 @@ object Barcode {
 
 		val product = if (result.next()) {
 			val name = result.getString("name")
-			val price = result.getFloat("price")
+			val amount = result.getDouble("amount")
+			val ingredientID = result.getInt("ingredientID")
 
 			result.close()
 			stat.close()
 
-			new Barcode(ean, name, price)
+			new Barcode(ean, Ingredient(ingredientID, connection), name, amount)
 		} else {
 			null
 		}
