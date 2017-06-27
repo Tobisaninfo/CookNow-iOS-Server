@@ -9,7 +9,7 @@ import de.tobias.cooknow.barcode.BarcodeGet
 import de.tobias.cooknow.ingredient.{IngredientGet, IngredientList}
 import de.tobias.cooknow.market.{MarketList, MarketOfferList}
 import de.tobias.cooknow.recipe.{RecipeGet, RecipeList}
-import de.tobias.cooknow.server.settings.SettingsHandler
+import de.tobias.cooknow.settings.SettingsHandler
 import de.tobias.cooknow.tasks.OfferScheduler
 import de.tobias.cooknow.tip.{TipCategoryList, TipList}
 import de.tobias.cooknow.transformer.JsonTransformer
@@ -41,9 +41,9 @@ object CookNowServerMain extends App {
 	// Static Images
 	/*
 	 * Image Location: x -> id
-	 *		Recipe: /images/recipe/x.png
-	 *		Ingredient: /images/ingredient/x.png
-	 *		MarketLogo: /images/market/x.png
+	 *		Recipe: /res/recipe/x.png
+	 *		Ingredient: /res/ingredient/x.png
+	 *		MarketLogo: /res/market/x.png
 	 */
 	externalStaticFileLocation(settings.download_folder)
 

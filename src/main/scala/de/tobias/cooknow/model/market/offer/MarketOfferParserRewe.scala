@@ -16,7 +16,7 @@ import net.ruippeixotog.scalascraper.scraper.ContentExtractors.{element, element
   * Created by tobias on 11.05.17.
   */
 class MarketOfferParserRewe extends MarketOfferParser {
-	override def fetch(): List[MarketOfferEntry] = {
+	override def fetchOffers(): List[MarketOfferEntry] = {
 		var offerList = List[MarketOfferEntry]()
 
 		val result = Unirest.get("https://www.rewe.de/angebote/")

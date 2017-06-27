@@ -6,13 +6,19 @@ import de.tobias.cooknow.model.market.MarketOfferEntry
 import spark.{Request, Response, Route, Spark}
 
 /**
-  * Created by tobias on 12.05.17.
+  * Handles http get request to get all offers for a special market.
+  *
+  * Possible request parameters: id<p>
+  * Return Value: [{id, title, content}]<p>
+  *
+  * @param connection database connection
+  * @author tobias
   */
-class MarketOfferList(val conn: Connection) extends Route {
+class MarketOfferList(val connection: Connection) extends Route {
 	override def handle(request: Request, response: Response): AnyRef = {
 		val offers = try {
 			val marketId = request.params(":id").toInt
-			MarketOfferEntry(marketId, conn)
+			MarketOfferEntry(marketId, connection)
 		} catch {
 			case e: NumberFormatException => Spark.halt(400, "Bad request: " + e.getLocalizedMessage)
 				null

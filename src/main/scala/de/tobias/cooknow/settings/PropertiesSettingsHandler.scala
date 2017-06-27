@@ -1,4 +1,4 @@
-package de.tobias.cooknow.server.settings
+package de.tobias.cooknow.settings
 
 import java.io.IOException
 import java.lang.reflect.Modifier
@@ -6,7 +6,9 @@ import java.nio.file.{Files, Path}
 import java.util.Properties
 
 /**
-  * Created by tobias on 05.02.17.
+  * SettingsHandler implementation with properties file format.
+  *
+  * @author tobias
   */
 class PropertiesSettingsHandler extends SettingsLoader with SettingsSaver {
 

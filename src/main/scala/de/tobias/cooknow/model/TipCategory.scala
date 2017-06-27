@@ -6,7 +6,10 @@ import de.tobias.cooknow.JsonConverter
 import org.json.JSONObject
 
 /**
-  * Created by tobias on 19.05.17.
+  * Model for the tip category.
+  *
+  * @param id   category id.
+  * @param name category name.
   */
 class TipCategory(val id: Int, val name: String) extends JsonConverter {
 	override def toJson: JSONObject = {
@@ -18,6 +21,12 @@ class TipCategory(val id: Int, val name: String) extends JsonConverter {
 }
 
 object TipCategory {
+	/**
+	  * Query all categories from the database.
+	  *
+	  * @param connection database connection
+	  * @return list of categories
+	  */
 	def apply(connection: Connection): List[TipCategory] = {
 		val stat = connection.prepareStatement("SELECT * FROM TipCategory")
 		val result = stat.executeQuery()

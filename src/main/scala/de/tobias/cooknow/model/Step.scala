@@ -6,7 +6,13 @@ import de.tobias.cooknow.JsonConverter
 import org.json.{JSONArray, JSONObject}
 
 /**
-  * Created by tobias on 18.05.17.
+  * Model for a step of a recipe.
+  *
+  * @param id          step id
+  * @param content     step content
+  * @param order       order in the recipe
+  * @param ingredients list of needed ingredients
+  * @param items       needed items
   */
 class Step(val id: Int, val content: String, val order: Int, val ingredients: List[IngredientUse], val items: List[Item]) extends JsonConverter {
 	override def toJson: JSONObject = {
@@ -28,6 +34,13 @@ class Step(val id: Int, val content: String, val order: Int, val ingredients: Li
 }
 
 object Step {
+	/**
+	  * Query all steps for a recipe from the database.
+	  *
+	  * @param recipeID   recipe id
+	  * @param connection database connection
+	  * @return list of steps
+	  */
 	def apply(recipeID: Int, connection: Connection): List[Step] = {
 		val stat = connection.prepareStatement("SELECT * FROM Step WHERE recipeID = ? ORDER BY 'order' ASC")
 		stat.setInt(1, recipeID)

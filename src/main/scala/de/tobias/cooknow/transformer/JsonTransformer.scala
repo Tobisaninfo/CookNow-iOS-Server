@@ -5,7 +5,9 @@ import org.json.JSONArray
 import spark.ResponseTransformer
 
 /**
-  * Created by tobias on 15.05.17.
+  * Class to convert a concrete object into a json object. Handles JsonConverter and List.
+  *
+  * @author tobias
   */
 class JsonTransformer extends ResponseTransformer {
 	override def render(o: scala.Any): String = {

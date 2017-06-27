@@ -6,10 +6,15 @@ import de.tobias.cooknow.model.market.Market
 import spark.{Request, Response, Route}
 
 /**
-  * Created by tobias on 12.05.17.
+  * Handles http get request to get all markets.
+  *
+  * Return Value: [{id, name}]<p>
+  *
+  * @param connection database connection
+  * @author tobias
   */
-class MarketList(val conn: Connection) extends Route {
+class MarketList(val connection: Connection) extends Route {
 	override def handle(request: Request, response: Response): AnyRef = {
-		Market(conn)
+		Market(connection)
 	}
 }

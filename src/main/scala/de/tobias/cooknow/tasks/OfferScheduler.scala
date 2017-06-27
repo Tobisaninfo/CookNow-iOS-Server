@@ -7,10 +7,15 @@ import de.tobias.cooknow.model.market.{Market, MarketOfferEntry}
 import de.tobias.cooknow.model.market.offer.{MarketOfferParserAldi, MarketOfferParserReal, MarketOfferParserRewe}
 
 /**
-  * Created by tobias on 16.05.17.
+  * Background Task for crawling market offers.
+  *
+  * @param connection database connection
   */
 class OfferScheduler(connection: Connection) extends TimerTask {
 
+	/**
+	  * List of all markets
+	  */
 	private val markets = Map("rewe" -> new MarketOfferParserRewe, "real" -> new MarketOfferParserReal, "aldi"
 		-> new MarketOfferParserAldi
 	)
@@ -19,9 +24,10 @@ class OfferScheduler(connection: Connection) extends TimerTask {
 		MarketOfferEntry.dropTable(connection)
 		for ((key, value) <- markets) {
 			try {
-				val offers = value.fetch()
+				val offers = value.fetchOffers()
 				val market = Market(connection, key)
 
+				// Insert Offers
 				for (offer <- offers) {
 					try {
 						offer.insert(connection, market)
@@ -30,7 +36,7 @@ class OfferScheduler(connection: Connection) extends TimerTask {
 					}
 				}
 			} catch {
-				case _: Exception =>
+				case e: Exception => e.printStackTrace()
 			}
 		}
 	}

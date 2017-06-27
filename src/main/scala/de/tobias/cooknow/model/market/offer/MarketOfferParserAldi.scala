@@ -17,7 +17,7 @@ import net.ruippeixotog.scalascraper.scraper.ContentExtractors.element
   */
 class MarketOfferParserAldi extends MarketOfferParser {
 
-	override def fetch(): List[MarketOfferEntry] = {
+	override def fetchOffers(): List[MarketOfferEntry] = {
 		var offerList = List[MarketOfferEntry]()
 
 		val result = Unirest.get("https://www.aldi-nord.de/angebote.html").asBinary()

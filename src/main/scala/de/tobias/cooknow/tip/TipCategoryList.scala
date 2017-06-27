@@ -6,10 +6,15 @@ import de.tobias.cooknow.model.TipCategory
 import spark.{Request, Response, Route}
 
 /**
-  * Created by tobias on 19.05.17.
+  * Handles http get request to get all tip categories.
+  *
+  * Return Value: [{id, name}]<p>
+  *
+  * @param connection database connection
+  * @author tobias
   */
-class TipCategoryList(databaseConnection: Connection) extends Route {
+class TipCategoryList(connection: Connection) extends Route {
 	override def handle(request: Request, response: Response): AnyRef = {
-		TipCategory(databaseConnection)
+		TipCategory(connection)
 	}
 }

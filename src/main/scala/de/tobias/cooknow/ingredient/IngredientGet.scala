@@ -6,13 +6,19 @@ import de.tobias.cooknow.model.Ingredient
 import spark.{Request, Response, Route, Spark}
 
 /**
-  * Created by tobias on 11.05.17.
+  * Handles http get request to get one ingredient.
+  *
+  * Possible request parameters: id<p>
+  * Return Value: {id, name, unit, properties: [{id, name}]}<p>
+  *
+  * @param connection database connection
+  * @author tobias
   */
-class IngredientGet(val conn: Connection) extends Route {
+class IngredientGet(val connection: Connection) extends Route {
 	override def handle(request: Request, response: Response): AnyRef = {
 		val ingredient = try {
 			val id = request.params(":id").toInt
-			val ingredient = Ingredient(id, conn)
+			val ingredient = Ingredient(id, connection)
 
 			if (ingredient == null) {
 				Spark.halt(400, "Bad Request: Ingredient not exists")

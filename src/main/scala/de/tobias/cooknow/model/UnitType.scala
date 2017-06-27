@@ -6,7 +6,10 @@ import de.tobias.cooknow.JsonConverter
 import org.json.JSONObject
 
 /**
-  * Created by tobias on 11.05.17.
+  * The unit type for an ingredient.
+  *
+  * @param id   id (from database)
+  * @param name name (only for debugging)
   */
 class UnitType(val id: Int, val name: String) extends JsonConverter {
 	def toJson: JSONObject = {
@@ -18,6 +21,13 @@ class UnitType(val id: Int, val name: String) extends JsonConverter {
 }
 
 object UnitType {
+	/**
+	  * Query a unit type from the database
+	  *
+	  * @param id   unit type id
+	  * @param conn database connection
+	  * @return unit type or null
+	  */
 	def apply(id: Int, conn: Connection): UnitType = {
 		val stat = conn.prepareStatement("SELECT * FROM Unit WHERE id = ?")
 		stat.setInt(1, id)

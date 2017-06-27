@@ -6,7 +6,13 @@ import de.tobias.cooknow.model.Tip
 import spark.{Request, Response, Route, Spark}
 
 /**
-  * Created by tobias on 18.05.17.
+  * Handles http get request to get all tips.
+  *
+  * Possible request parameters: category id<p>
+  * Return Value: [{id, title, content}]<p>
+  *
+  * @param connection database connection
+  * @author tobias
   */
 class TipList(connection: Connection) extends Route {
 	override def handle(request: Request, response: Response): AnyRef = {

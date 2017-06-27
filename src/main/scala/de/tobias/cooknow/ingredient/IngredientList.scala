@@ -6,10 +6,15 @@ import de.tobias.cooknow.model.Ingredient
 import spark.{Request, Response, Route}
 
 /**
-  * Created by tobias on 11.05.17.
+  * Handles http get request to get all ingredients.
+  *
+  * Return Value: [{id, name, unit, properties: [{id, name}]}]<p>
+  *
+  * @param connection database connection
+  * @author tobias
   */
-class IngredientList(val conn: Connection) extends Route {
+class IngredientList(val connection: Connection) extends Route {
 	override def handle(request: Request, response: Response): AnyRef = {
-		Ingredient(conn)
+		Ingredient(connection)
 	}
 }

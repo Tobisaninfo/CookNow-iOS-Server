@@ -23,12 +23,12 @@ class MarketOfferParserKaufland extends MarketOfferParser {
 		"https://www.kaufland.de/angebote/aktuelle-woche.category=08_Getränke__Spirituosen.html"
 	)
 
-	override def fetch(): List[MarketOfferEntry] = {
+	override def fetchOffers(): List[MarketOfferEntry] = {
 		urls.flatMap(fetchUrl).toList
 	}
 
 	private def fetchUrl(url: String): List[MarketOfferEntry] = {
-		var offerList = List[MarketOfferEntry]()
+		val offerList = List[MarketOfferEntry]()
 
 		val result = Unirest.get(url).asBinary()
 

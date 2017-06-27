@@ -6,11 +6,16 @@ import de.tobias.cooknow.model.Recipe
 import spark.{Request, Response, Route}
 
 /**
-  * Created by tobias on 10.05.17.
+  * Handles http get request to get all recipes.
+  *
+  * Return Value: [{id, name, difficulty, time, steps: [{id, content, order, ingredient[], items}]}]<p>
+  *
+  * @param connection database connection
+  * @author tobias
   */
-class RecipeList(val conn: Connection) extends Route {
+class RecipeList(val connection: Connection) extends Route {
 
 	override def handle(request: Request, response: Response): AnyRef = {
-		Recipe(conn)
+		Recipe(connection)
 	}
 }

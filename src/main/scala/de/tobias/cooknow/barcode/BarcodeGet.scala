@@ -6,7 +6,13 @@ import de.tobias.cooknow.model.Barcode
 import spark.{Request, Response, Route, Spark}
 
 /**
-  * Created by tobias on 10.05.17.
+  * Handles http get request to get a product that matches the barcode.
+  *
+  * Possible request parameters: category ean<p>
+  * Return Value: [{code, ingredient, name, amount}]<p>
+  *
+  * @param connection database connection
+  * @author tobias
   */
 class BarcodeGet(val connection: Connection) extends Route {
 	override def handle(request: Request, response: Response): AnyRef = {

@@ -6,9 +6,15 @@ import de.tobias.cooknow.JsonConverter
 import org.json.{JSONArray, JSONObject}
 
 /**
-  * Created by tobias on 10.05.17.
+  * Model for a recipe.
+  *
+  * @param id         recipe id
+  * @param name       recipe name
+  * @param difficulty difficulty (1-3)
+  * @param time       time (in min)
+  * @param steps      list of steps
   */
-class Recipe(val id: Int, val name: String,  val difficulty: Int, val time: Int, val steps: List[Step]) extends JsonConverter {
+class Recipe(val id: Int, val name: String, val difficulty: Int, val time: Int, val steps: List[Step]) extends JsonConverter {
 
 	def toJson: JSONObject = {
 		val jsonObject = new JSONObject()
@@ -26,6 +32,12 @@ class Recipe(val id: Int, val name: String,  val difficulty: Int, val time: Int,
 }
 
 object Recipe {
+	/**
+	  * Query all recipes from the database.
+	  *
+	  * @param conn database connection
+	  * @return list of recipes
+	  */
 	def apply(conn: Connection): List[Recipe] = {
 		val stat = conn.prepareStatement("SELECT * FROM Recipe")
 		val result = stat.executeQuery()
@@ -47,6 +59,13 @@ object Recipe {
 		list
 	}
 
+	/**
+	  * Query one recipe from the database.
+	  *
+	  * @param id   recipe id
+	  * @param conn database connection
+	  * @return recipe
+	  */
 	def apply(id: Int, conn: Connection): Recipe = {
 		val stat = conn.prepareStatement("SELECT * FROM Recipe WHERE id=?")
 		stat.setInt(1, id)

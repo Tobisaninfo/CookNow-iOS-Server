@@ -15,7 +15,7 @@ import net.ruippeixotog.scalascraper.scraper.ContentExtractors.{element, element
 class MarketOfferParserReal extends MarketOfferParser {
 	private val dateFormatter = new SimpleDateFormat("dd.MM.yyyy")
 
-	override def fetch(): List[MarketOfferEntry] = {
+	override def fetchOffers(): List[MarketOfferEntry] = {
 		var offerList = List[MarketOfferEntry]()
 
 		try {
@@ -38,7 +38,7 @@ class MarketOfferParserReal extends MarketOfferParser {
 				offerList ::= offer
 			})
 		} catch {
-			case e: NoSuchElementException =>
+			case _: NoSuchElementException =>
 		}
 		offerList
 	}

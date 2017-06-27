@@ -9,7 +9,7 @@ import de.tobias.cooknow.model.market.MarketOfferEntry
   */
 trait MarketOfferParser {
 
-	def fetch(): List[MarketOfferEntry]
+	def fetchOffers(): List[MarketOfferEntry]
 
 	import java.text.{DecimalFormat, NumberFormat}
 	import java.util.Locale

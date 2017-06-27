@@ -6,9 +6,12 @@ import de.tobias.cooknow.JsonConverter
 import org.json.JSONObject
 
 /**
-  * Created by tobias on 11.05.17.
+  * Property for an ingredient. The concrete objects are defined in the database.
+  *
+  * @param id   id
+  * @param name name
   */
-class Property(val id: Int, val name: String) extends JsonConverter  {
+class Property(val id: Int, val name: String) extends JsonConverter {
 	def toJson: JSONObject = {
 		val propertyJson = new JSONObject()
 		propertyJson.put("id", id)
@@ -18,6 +21,13 @@ class Property(val id: Int, val name: String) extends JsonConverter  {
 }
 
 object Property {
+	/**
+	  * Query all properties for an ingredient from the database
+	  *
+	  * @param ingredientID ingredient id
+	  * @param conn         database connection
+	  * @return list of properties
+	  */
 	def apply(ingredientID: Int, conn: Connection): List[Property] = {
 		val stat = conn.prepareStatement("SELECT * FROM IngredientProperty JOIN Property ON " +
 			"IngredientProperty.propertyID = Property.id WHERE ingredientID = ?")

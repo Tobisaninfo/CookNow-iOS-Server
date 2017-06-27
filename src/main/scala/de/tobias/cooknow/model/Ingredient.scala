@@ -6,14 +6,19 @@ import de.tobias.cooknow.JsonConverter
 import org.json.{JSONArray, JSONObject}
 
 /**
-  * Created by tobias on 11.05.17.
+  * Model for ingredients.
+  *
+  * @param id         id
+  * @param name       name
+  * @param unit       unit type
+  * @param properties properties for the ingredient
   */
-class Ingredient(val id: Int, val name: String, val unit: UnitType, val property: List[Property]) extends JsonConverter  {
+class Ingredient(val id: Int, val name: String, val unit: UnitType, val properties: List[Property]) extends JsonConverter {
 	def toJson: JSONObject = {
 		val jsonObject = new JSONObject()
 
 		val propertiesArray = new JSONArray()
-		property.map(_.toJson).foreach(propertiesArray.put)
+		properties.map(_.toJson).foreach(propertiesArray.put)
 
 		jsonObject.put("id", id)
 		jsonObject.put("name", name)
@@ -25,6 +30,12 @@ class Ingredient(val id: Int, val name: String, val unit: UnitType, val property
 }
 
 object Ingredient {
+	/**
+	  * Query all ingredients from the database.
+	  *
+	  * @param conn database connection
+	  * @return list of all ingredients
+	  */
 	def apply(conn: Connection): List[Ingredient] = {
 		val stat = conn.prepareStatement("SELECT * FROM Ingredient")
 		val result = stat.executeQuery()
@@ -48,6 +59,13 @@ object Ingredient {
 
 	private var cache = Map[Int, Ingredient]()
 
+	/**
+	  * Query an ingredients from the database. Once it is queried, it is stored in a local cache.
+	  *
+	  * @param id   id
+	  * @param conn database connection
+	  * @return ingredient.
+	  */
 	def apply(id: Int, conn: Connection): Ingredient = {
 		if (cache.contains(id)) {
 			cache(id)

@@ -3,7 +3,9 @@ package de.tobias.cooknow
 import java.sql.Connection
 
 /**
-  * Created by tobias on 13.06.17.
+  * MySQL helper.
+  *
+  * @author tobias
   */
 object MySQLStore {
 
