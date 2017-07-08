@@ -6,7 +6,7 @@ import java.util.Timer
 import java.util.concurrent.TimeUnit
 
 import de.tobias.cooknow.barcode.BarcodeGet
-import de.tobias.cooknow.ingredient.{IngredientGet, IngredientList}
+import de.tobias.cooknow.ingredient.{IngredientGet, IngredientList, IngredientPropertiesList}
 import de.tobias.cooknow.market.{MarketList, MarketOfferList}
 import de.tobias.cooknow.recipe.{RecipeGet, RecipeList}
 import de.tobias.cooknow.settings.SettingsHandler
@@ -58,6 +58,8 @@ object CookNowServerMain extends App {
 		get("/", new IngredientList(databaseConnection), new JsonTransformer)
 		get("/:id", new IngredientGet(databaseConnection), new JsonTransformer)
 	})
+
+	get("/properties/", new IngredientPropertiesList(databaseConnection), new JsonTransformer)
 
 	// Market
 	path("/market", () => {

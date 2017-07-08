@@ -49,4 +49,29 @@ object Property {
 
 		list
 	}
+
+	/**
+	  * Query all properties from the database
+	  *
+	  * @param conn         database connection
+	  * @return list of properties
+	  */
+	def apply(conn: Connection): List[Property] = {
+		val stat = conn.prepareStatement("SELECT * FROM Property")
+		val result = stat.executeQuery()
+		var list = List[Property]()
+
+		while (result.next()) {
+			val id = result.getInt("id")
+			val name = result.getString("name")
+
+			val property = new Property(id, name)
+			list ::= property
+		}
+
+		result.close()
+		stat.close()
+
+		list
+	}
 }

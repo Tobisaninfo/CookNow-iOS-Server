@@ -19,7 +19,7 @@ class Barcode(val code: String, val ingredient: Ingredient, val name: String, va
 	  *
 	  * @param connection database connection
 	  */
-	def insert(connection: Connection): Unit^ = {
+	def insert(connection: Connection): Unit = {
 		val stat = connection.prepareStatement("INSERT INTO Barcode (name, code, amount) VALUES (?, ?, ?)")
 		stat.setString(1, name)
 		stat.setString(2, code)
