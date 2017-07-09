@@ -13,19 +13,29 @@ import org.json.JSONObject
   * @param name       name
   * @param amount     amount in the product
   */
-class Barcode(val code: String, val ingredient: Ingredient, val name: String, val amount: Double = 0) extends JsonConverter {
+class Barcode(val code: String, var ingredient: Ingredient, val name: String, val amount: Double = 0) extends JsonConverter {
 	/**
 	  * Insert a new product into the database
 	  *
 	  * @param connection database connection
 	  */
 	def insert(connection: Connection): Unit = {
-		val stat = connection.prepareStatement("INSERT INTO Barcode (name, code, amount) VALUES (?, ?, ?)")
-		stat.setString(1, name)
-		stat.setString(2, code)
-		stat.setDouble(3, amount)
-		stat.executeUpdate()
-		stat.close()
+		if (ingredient != null) {
+			val stat = connection.prepareStatement("INSERT INTO Barcode (name, ingredientID, code, amount) VALUES (?, ?, ?, ?)")
+			stat.setString(1, name)
+			stat.setInt(2, ingredient.id)
+			stat.setString(3, code)
+			stat.setDouble(4, amount)
+			stat.executeUpdate()
+			stat.close()
+		} else {
+			val stat = connection.prepareStatement("INSERT INTO Barcode (name, code, amount) VALUES (?, ?, ?)")
+			stat.setString(1, name)
+			stat.setString(2, code)
+			stat.setDouble(3, amount)
+			stat.executeUpdate()
+			stat.close()
+		}
 	}
 
 	def toJson: JSONObject = {

@@ -2,7 +2,8 @@ package de.tobias.cooknow.barcode
 
 import java.sql.Connection
 
-import de.tobias.cooknow.model.Barcode
+import de.tobias.cooknow.model.{Barcode, Ingredient}
+import net.ricecode.similarity.{JaroWinklerStrategy, StringSimilarityServiceImpl}
 import spark.{Request, Response, Route, Spark}
 
 /**
@@ -23,6 +24,18 @@ class BarcodeGet(val connection: Connection) extends Route {
 		if (product == null) {
 			product = BarcodeParser.getProduct(ean)
 			if (product != null) {
+
+				val ingredients = Ingredient(connection)
+				for (ingredient <- ingredients) {
+					val strategy = new JaroWinklerStrategy
+					val service = new StringSimilarityServiceImpl(strategy)
+					val score = service.score(product.name, ingredient.name)
+
+					if (score > 0.9) {
+						product.ingredient = ingredient
+					}
+				}
+
 				product.insert(connection)
 			}
 		}
