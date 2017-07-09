@@ -21,6 +21,9 @@ class UnitType(val id: Int, val name: String) extends JsonConverter {
 }
 
 object UnitType {
+
+	private var cache = Map[Int, UnitType]()
+
 	/**
 	  * Query a unit type from the database
 	  *
@@ -29,19 +32,23 @@ object UnitType {
 	  * @return unit type or null
 	  */
 	def apply(id: Int, conn: Connection): UnitType = {
-		val stat = conn.prepareStatement("SELECT * FROM Unit WHERE id = ?")
-		stat.setInt(1, id)
-		val result = stat.executeQuery()
-
-		val unit = if (result.next()) {
-			new UnitType(result.getInt("id"), result.getString("name"))
+		if (cache.contains(id)) {
+			cache(id)
 		} else {
-			null
+			val stat = conn.prepareStatement("SELECT * FROM Unit WHERE id = ?")
+			stat.setInt(1, id)
+			val result = stat.executeQuery()
+
+			val unit = if (result.next()) {
+				new UnitType(result.getInt("id"), result.getString("name"))
+			} else {
+				null
+			}
+
+			result.close()
+			stat.close()
+
+			unit
 		}
-
-		result.close()
-		stat.close()
-
-		unit
 	}
 }
