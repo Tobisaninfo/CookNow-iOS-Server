@@ -50,4 +50,30 @@ object Tip {
 
 		list
 	}
+
+	/**
+	  * Query all tips from the database.
+	  *
+	  * @param connection database connection
+	  * @return list of tips
+	  */
+	def apply(connection: Connection): List[Tip] = {
+		val stat = connection.prepareStatement("SELECT * FROM Tip")
+		val result = stat.executeQuery()
+
+		var list = List[Tip]()
+
+		while (result.next()) {
+			val id = result.getInt("id")
+			val title = result.getString("title")
+			val content = result.getString("content")
+
+			val tip = new Tip(id, title, content)
+			list ::= tip
+		}
+		result.close()
+		stat.close()
+
+		list
+	}
 }

@@ -11,7 +11,7 @@ import de.tobias.cooknow.market.{MarketList, MarketOfferList}
 import de.tobias.cooknow.recipe.{RecipeGet, RecipeList}
 import de.tobias.cooknow.settings.SettingsHandler
 import de.tobias.cooknow.tasks.OfferScheduler
-import de.tobias.cooknow.tip.{TipCategoryList, TipList}
+import de.tobias.cooknow.tip.{TipList, TipCategoryList, TipInCategoryList}
 import de.tobias.cooknow.transformer.JsonTransformer
 import spark.Spark._
 
@@ -75,7 +75,8 @@ object CookNowServerMain extends App {
 
 	// Tip
 	path("/tip", () => {
-		get("/:category", new TipList(databaseConnection), new JsonTransformer)
+		get("/", new TipList(databaseConnection), new JsonTransformer)
+		get("/:category", new TipInCategoryList(databaseConnection), new JsonTransformer)
 		get("/category/", new TipCategoryList(databaseConnection), new JsonTransformer)
 	})
 
