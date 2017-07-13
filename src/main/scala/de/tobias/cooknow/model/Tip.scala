@@ -8,16 +8,18 @@ import org.json.JSONObject
 /**
   * Model for a tip.
   *
-  * @param id      tip id
-  * @param title   tip title
-  * @param content tip content
+  * @param id       tip id
+  * @param title    tip title
+  * @param content  tip content
+  * @param category tip category
   */
-class Tip(val id: Int, val title: String, val content: String) extends JsonConverter {
+class Tip(val id: Int, val title: String, val content: String, var category: Int) extends JsonConverter {
 	override def toJson: JSONObject = {
 		val jsonObject = new JSONObject()
 		jsonObject.put("id", id)
 		jsonObject.put("title", title)
 		jsonObject.put("content", content)
+		jsonObject.put("category", category)
 		jsonObject
 	}
 }
@@ -42,7 +44,7 @@ object Tip {
 			val title = result.getString("title")
 			val content = result.getString("content")
 
-			val tip = new Tip(id, title, content)
+			val tip = new Tip(id, title, content, id)
 			list ::= tip
 		}
 		result.close()
@@ -67,8 +69,9 @@ object Tip {
 			val id = result.getInt("id")
 			val title = result.getString("title")
 			val content = result.getString("content")
+			var categoryID = result.getInt("categoryID")
 
-			val tip = new Tip(id, title, content)
+			val tip = new Tip(id, title, content, categoryID)
 			list ::= tip
 		}
 		result.close()
