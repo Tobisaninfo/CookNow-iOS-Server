@@ -8,7 +8,7 @@ import spark.{Request, Response, Route}
 /**
   * Handles http get request to get all ingredients.
   *
-  * Return Value: [{id, name, unit, properties: [{id, name}]}]<p>
+  * Return Value: [id, name, productname, unit, properties: [{id, name}], canAddToPantry]<p>
   *
   * @param connection database connection
   * @author tobias

@@ -8,13 +8,14 @@ import org.json.{JSONArray, JSONObject}
 /**
   * Model for ingredients.
   *
-  * @param id          id
-  * @param name        name
-  * @param productName productname (german)
-  * @param unit        unit type
-  * @param properties  properties for the ingredient
+  * @param id             id
+  * @param name           name
+  * @param productName    productname (german)
+  * @param unit           unit type
+  * @param properties     properties for the ingredient
+  * @param canAddToPantry can add this ingredient to pantry flag
   */
-class Ingredient(val id: Int, val name: String, val productName: String, val unit: UnitType, val properties: List[Property]) extends JsonConverter {
+class Ingredient(val id: Int, val name: String, val productName: String, val unit: UnitType, val properties: List[Property], val canAddToPantry: Boolean) extends JsonConverter {
 	def toJson: JSONObject = {
 		val jsonObject = new JSONObject()
 
@@ -26,6 +27,7 @@ class Ingredient(val id: Int, val name: String, val productName: String, val uni
 		jsonObject.put("productname", productName)
 		jsonObject.put("unit", unit.toJson)
 		jsonObject.put("property", propertiesArray)
+		jsonObject.put("canAddToPantry", canAddToPantry)
 		jsonObject
 	}
 
@@ -49,8 +51,9 @@ object Ingredient {
 			val name = result.getString("displayname")
 			val productname = result.getString("productname")
 			val unitType = result.getInt("unitType")
+			val canAddToPantry = if (result.getInt("pantry") == 0) false else true
 
-			val ingredient = new Ingredient(id, name, productname, UnitType(unitType, conn), Property(id, conn))
+			val ingredient = new Ingredient(id, name, productname, UnitType(unitType, conn), Property(id, conn), canAddToPantry)
 			list ::= ingredient
 		}
 
@@ -83,9 +86,9 @@ object Ingredient {
 				val name = result.getString("displayname")
 				val productname = result.getString("productname")
 				val unitType = result.getInt("unitType")
+				val canAddToPantry = if (result.getInt("pantry") == 0) false else true
 
-
-				new Ingredient(id, name, productname, UnitType(unitType, conn), Property(id, conn))
+				new Ingredient(id, name, productname, UnitType(unitType, conn), Property(id, conn), canAddToPantry)
 			} else {
 				null
 			}

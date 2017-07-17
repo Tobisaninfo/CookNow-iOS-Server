@@ -9,12 +9,13 @@ import spark.{Request, Response, Route, Spark}
   * Handles http get request to get one ingredient.
   *
   * Possible request parameters: id<p>
-  * Return Value: {id, name, unit, properties: [{id, name}]}<p>
+  * Return Value: {id, name, productname, unit, properties: [{id, name}], canAddToPantry}<p>
   *
   * @param connection database connection
   * @author tobias
   */
-class IngredientGet(val connection: Connection) extends Route {
+class
+IngredientGet(val connection: Connection) extends Route {
 	override def handle(request: Request, response: Response): AnyRef = {
 		val ingredient = try {
 			val id = request.params(":id").toInt
