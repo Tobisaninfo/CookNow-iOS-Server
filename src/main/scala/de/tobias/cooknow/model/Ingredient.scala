@@ -8,12 +8,13 @@ import org.json.{JSONArray, JSONObject}
 /**
   * Model for ingredients.
   *
-  * @param id         id
-  * @param name       name
-  * @param unit       unit type
-  * @param properties properties for the ingredient
+  * @param id          id
+  * @param name        name
+  * @param productName productname (german)
+  * @param unit        unit type
+  * @param properties  properties for the ingredient
   */
-class Ingredient(val id: Int, val name: String, val unit: UnitType, val properties: List[Property]) extends JsonConverter {
+class Ingredient(val id: Int, val name: String, val productName: String, val unit: UnitType, val properties: List[Property]) extends JsonConverter {
 	def toJson: JSONObject = {
 		val jsonObject = new JSONObject()
 
@@ -21,7 +22,8 @@ class Ingredient(val id: Int, val name: String, val unit: UnitType, val properti
 		properties.map(_.toJson).foreach(propertiesArray.put)
 
 		jsonObject.put("id", id)
-		jsonObject.put("name", name)
+		jsonObject.put("displayname", name)
+		jsonObject.put("productname", productName)
 		jsonObject.put("unit", unit.toJson)
 		jsonObject.put("property", propertiesArray)
 		jsonObject
@@ -44,10 +46,11 @@ object Ingredient {
 
 		while (result.next()) {
 			val id = result.getInt("id")
-			val name = result.getString("name")
+			val name = result.getString("displayname")
+			val productname = result.getString("productname")
 			val unitType = result.getInt("unitType")
 
-			val ingredient = new Ingredient(id, name, UnitType(unitType, conn), Property(id, conn))
+			val ingredient = new Ingredient(id, name, productname, UnitType(unitType, conn), Property(id, conn))
 			list ::= ingredient
 		}
 
@@ -77,11 +80,12 @@ object Ingredient {
 
 			val ingredient = if (result.next()) {
 				val id = result.getInt("id")
-				val name = result.getString("name")
+				val name = result.getString("displayname")
+				val productname = result.getString("productname")
 				val unitType = result.getInt("unitType")
 
 
-				new Ingredient(id, name, UnitType(unitType, conn), Property(id, conn))
+				new Ingredient(id, name, productname, UnitType(unitType, conn), Property(id, conn))
 			} else {
 				null
 			}

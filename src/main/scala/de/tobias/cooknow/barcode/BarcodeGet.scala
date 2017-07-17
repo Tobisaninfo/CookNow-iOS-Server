@@ -29,7 +29,7 @@ class BarcodeGet(val connection: Connection) extends Route {
 				for (ingredient <- ingredients) {
 					val strategy = new JaroWinklerStrategy
 					val service = new StringSimilarityServiceImpl(strategy)
-					val score = service.score(product.name, ingredient.name)
+					val score = service.score(product.name, ingredient.productName)
 
 					if (score > 0.9) {
 						product.ingredient = ingredient
